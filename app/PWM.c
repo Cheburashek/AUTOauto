@@ -7,6 +7,7 @@
  #include "PWM.h"
  
  
+ // PWM initialization
  void PWM_init ( void ){
 
    
@@ -38,20 +39,48 @@
    // PWM frequency:                                                                              
    
    
-   TPM0->MOD = TPM_MOD_MOD(0x99C0); // For 50Hz PWM     TODO: macro
+   TPM0->MOD = TPM_MOD_MOD( PWM_MOD_50HZ ); // For 50Hz PWM    
 
    TPM0->SC |= TPM_SC_PS( 0u );    // Divided by 1 -> 4MHz 
    TPM0->SC |= TPM_SC_CMOD( 1u );    // TPM enabled             
+         
+ }
+
+ 
+ // Setting PWM duty in promiles 
+ void PWM_set_pro ( uint8_t ch, uint16_t promile ){
+   
+    uint16_t temp = 0;
     
-   
-   TPM0->CONTROLS[STEER_CH].CnV |= TPM_CnV_VAL(512);
-   TPM0->CONTROLS[MOTOR_CH].CnV |= TPM_CnV_VAL(4505);
-
+    if ( promile != 1000 ){
+       
+       temp = ( PWM_MOD_50HZ * promile ) / 1000;      
+    }
+    else{          
+       temp = PWM_MOD_50HZ + 1; // For 100% PWM duty
+    }
+    
+    TPM0->CONTROLS[ ch ].CnV = TPM_CnV_VAL( temp );  
+    
  }
-
- void PWM_duty_set ( uint8_t ch, uint16_t duty ){
+ 
+  // Setting PWM duty in 1/10000
+ void PWM_set_E5 ( uint8_t ch, uint16_t E5 ){
    
+    uint16_t temp = 0;
+    
+    if ( E5 != 10000 ){
+       
+       temp = ( PWM_MOD_50HZ * E5 ) / 10000;      
+    }
+    else{          
+       temp = PWM_MOD_50HZ + 1; // For 100% PWM duty
+    }
+    
+    TPM0->CONTROLS[ ch ].CnV = TPM_CnV_VAL( temp );  
+    
+ }
  
  
- }
+ 
  

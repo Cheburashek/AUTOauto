@@ -10,6 +10,8 @@
  #include "MKL46Z4.h"
  #include <stdbool.h>
  
+ 
+ 
  #define STEER_PIN 1  // PTC1
  #define MOTOR_PIN 2  // PTC2
  
@@ -19,8 +21,13 @@
  #define STEER_MASK  ( 1UL<<STEER_PIN )
  #define MOTOR_MASK  ( 1UL<<MOTOR_PIN )
  
+ #define PWM_MOD_50HZ   0x99C0   // for 50Hz PWM
+ 
  
  void PWM_init ( void );
- 
+ void PWM_set_pro ( uint8_t ch, uint16_t promile );
+ void PWM_set_E5 ( uint8_t ch, uint16_t E5 );
  
  #endif
+ 
+ 
