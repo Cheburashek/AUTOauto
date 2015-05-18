@@ -6,7 +6,7 @@
  
  #include "PWM.h"
  
- 
+ //***********************************************************************
  // PWM initialization
  void PWM_init ( void ){
 
@@ -23,18 +23,18 @@
 	PORTC->PCR[ MOTOR_PIN ] |= PORT_PCR_MUX( 4u );
    
     
-   // Center-aligned PWM, Hi-true, both channels:
+   // Center-aligned PWM, LOW-true, both channels:
    TPM0->CONTROLS[STEER_CH].CnSC |= TPM_CnSC_MSB_MASK
-                                 |  TPM_CnSC_ELSB_MASK; 
+                                 |  TPM_CnSC_ELSA_MASK; 
    
    TPM0->CONTROLS[STEER_CH].CnSC &= ~(TPM_CnSC_MSA_MASK
-                                    | TPM_CnSC_ELSA_MASK);
+                                    | TPM_CnSC_ELSB_MASK);
    
    TPM0->CONTROLS[MOTOR_CH].CnSC |= TPM_CnSC_MSB_MASK
-                                 |  TPM_CnSC_ELSB_MASK; 
+                                 |  TPM_CnSC_ELSA_MASK; 
    
    TPM0->CONTROLS[MOTOR_CH].CnSC &= ~(TPM_CnSC_MSA_MASK
-                                    | TPM_CnSC_ELSA_MASK); 
+                                    | TPM_CnSC_ELSB_MASK); 
                        
    // PWM frequency:                                                                              
    
@@ -46,7 +46,7 @@
          
  }
 
- 
+ //***********************************************************************
  // Setting PWM duty in promiles 
  void PWM_set_pro ( uint8_t ch, uint16_t promile ){
    
@@ -63,8 +63,8 @@
     TPM0->CONTROLS[ ch ].CnV = TPM_CnV_VAL( temp );  
     
  }
- 
-  // Setting PWM duty in 1/10000
+//***********************************************************************
+// Setting PWM duty in 1/10000
  void PWM_set_E5 ( uint8_t ch, uint16_t E5 ){
    
     uint16_t temp = 0;

@@ -428,6 +428,31 @@
               <FileType>1</FileType>
               <FilePath>.\app\Drive.c</FilePath>
             </File>
+            <File>
+              <FileName>ring_buffer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\app\ring_buffer.h</FilePath>
+            </File>
+            <File>
+              <FileName>ring_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\app\ring_buffer.c</FilePath>
+            </File>
+            <File>
+              <FileName>sLCD.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\app\sLCD.c</FilePath>
+            </File>
+            <File>
+              <FileName>sLCD.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\app\sLCD.h</FilePath>
+            </File>
+            <File>
+              <FileName>USART.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\app\USART.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
