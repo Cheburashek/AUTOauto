@@ -46,7 +46,7 @@ void UART2_IRQHandler(void){
 
    char temp = 0;
    
-   //Transmitting:
+   //Transmitting ( until Tx ring buffer is empty ):
    if ( UART2->S1 & UART_S1_TDRE_MASK ){
       
       if ( RingBuffer_GetChar( &UART_RingBuffer_Tx, &temp ) ){
@@ -61,10 +61,17 @@ void UART2_IRQHandler(void){
    
    // Receiving:
    
+   if ( UART2->S1 & UART_S1_RDRF_MASK ){
+   
+      RingBuffer_PutChar( &UART_RingBuffer_Rx, UART2->D );
+      
+      
+      
+   }
+   
    
    
 }
-
 
 
 

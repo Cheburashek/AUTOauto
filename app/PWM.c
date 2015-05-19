@@ -6,6 +6,10 @@
  
  #include "PWM.h"
  
+ 
+ static cb_t cb_TPM1;
+ 
+ 
  //***********************************************************************
  // PWM initialization
  void PWM_init ( void ){
@@ -83,4 +87,62 @@
  
  
  
+ //************************************************************************
+ // TPM1 general purpose timer initialization
+ void TPM1_init ( void ){ 
+ 
+   SIM->SCGC6 |= SIM_SCGC6_TPM1_MASK;
+   SIM->SOPT2 |= SIM_SOPT2_TPMSRC( 3u ); // MCGIRCLK clock as a source 
+    
+   MCG->C1 |= MCG_C1_IRCLKEN_MASK;  // MCGIRCLK enabled
+   MCG->C2 |= MCG_C2_IRCS_MASK;     // Fast IRC 4MHz
+     
+   TPM1->SC |= TPM_SC_PS( 7u );    // Divided by 128 -> ~16kHz 
+ 
+ 	NVIC_ClearPendingIRQ(TPM1_IRQn);
+	NVIC_EnableIRQ(TPM1_IRQn);
+	NVIC_SetPriority(TPM1_IRQn, 1);  // Lower priority
+   
+ }
+ 
+ 
+ //************************************************************************
+ // TPM1 general purpose timer for callbacks   
+ void TPM1_OneShot ( cb_t cb, uint16_t ms ){
+ 
+   // for ~16kHz ( max 4s ): 
+   if ( ms <= 4000 ){
+      TPM1->MOD = TPM_MOD_MOD( (16*ms) ); 
+   }
+   else{
+      TPM1->MOD = TPM_MOD_MOD( 64000 );
+   }
+   
+   TPM1->SC |= TPM_SC_TOIE_MASK; // Interrupt enabled
+   
+   cb_TPM1 = cb;  // Callback set
+   
+   TPM1->SC |= TPM_SC_CMOD( 1u );    // TPM enabled   
+   
+ }
+ 
+  
+ //************************************************************************
+ // TPM1 IRC handler:
+ 
+ void TPM1_IRQHandler ( void ){
+ 
+   // Timer overflow:
+   if ( TPM1->SC & TPM_SC_TOF_MASK ){  
+   
+      TPM1->SC |= TPM_SC_TOF_MASK;    // Clearing TOF
+      TPM1->SC &= ~TPM_SC_TOIE_MASK;  // Interrupt disabled
+      TPM1->SC &= ~TPM_SC_CMOD_MASK; // TPM disabled  -> Firstly disable interrupts!
+      TPM1->MOD = TPM_MOD_MOD( 0u );
+      
+      cb_TPM1();    // Callback invoke 
+      
+   }
+   
+ }
  

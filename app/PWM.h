@@ -11,7 +11,7 @@
  #include <stdbool.h>
  
  
- 
+ // Macros:
  #define STEER_PIN 1  // PTC1
  #define MOTOR_PIN 2  // PTC2
  
@@ -23,10 +23,16 @@
  
  #define PWM_MOD_50HZ   0x99C0   // for 50Hz PWM
  
+ // Typedefs: 
+ typedef  void(*cb_t)(void);
  
+ // Functions definitions:
  void PWM_init ( void );
  void PWM_set_pro ( uint8_t ch, uint16_t promile );
  void PWM_set_E5 ( uint8_t ch, uint16_t E5 );
+ 
+ void TPM1_OneShot ( cb_t cb, uint16_t ms );
+ void TPM1_init ( void );
  
  #endif
  
