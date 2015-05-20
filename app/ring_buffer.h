@@ -3,19 +3,20 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include "MKL46Z4.h"
 
-#define RB_SIZE 16
+#define RB_SIZE 20
 
 /** Structure describing the ring buffer. */
 typedef struct {
 	
-	char *pTail;
-	char *pHead;
+	uint8_t *pTail;
+	uint8_t *pHead;
 	
-	char *pStart;
-	char *pEnd;
+	uint8_t *pStart;
+	uint8_t *pEnd;
 	
-   char rTab[ RB_SIZE ];
+   uint8_t rTab[ RB_SIZE ];
 	size_t Size;
 	
 } RingBuffer;
@@ -63,13 +64,13 @@ size_t RingBuffer_GetLen(const RingBuffer *ringBuffer);
 size_t RingBuffer_GetCapacity(const RingBuffer *ringBuffer);
 
 /**
- * Appends a single character to the ring buffer. The stored data length will be
+ * Appends a single character to the ring buffer. The stored data length will bea
  * increased by 1.
  *
  * @param ringBuffer pointer to a \ref RingBuffer structure
  * @return true if the character was added successfully, false otherwise
 */
-bool RingBuffer_PutChar(RingBuffer *ringBuffer, char c);
+bool RingBuffer_PutChar(RingBuffer *ringBuffer, uint8_t c);
 
 /**
  * Pulls out a single character from the ring buffer. The stored data length will be
@@ -78,7 +79,7 @@ bool RingBuffer_PutChar(RingBuffer *ringBuffer, char c);
  * @param ringBuffer pointer to a \ref RingBuffer structure
  * @return true if the character was pulled out successfully, false otherwise
 */
-bool RingBuffer_GetChar(RingBuffer *ringBuffer, char *c);
+bool RingBuffer_GetChar(RingBuffer *ringBuffer, uint8_t *c);
 
 
 #endif //_RING_BUFFER_

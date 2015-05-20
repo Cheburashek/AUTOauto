@@ -110,6 +110,8 @@
  // TPM1 general purpose timer for callbacks   
  void TPM1_OneShot ( cb_t cb, uint16_t ms ){
  
+   TPM1->CNT = TPM_CNT_COUNT( 0u );   // Clearing TPM
+ 
    // for ~16kHz ( max 4s ): 
    if ( ms <= 4000 ){
       TPM1->MOD = TPM_MOD_MOD( (16*ms) ); 

@@ -63,7 +63,7 @@ bool RingBuffer_IsEmpty(const RingBuffer *ringBuffer)
 size_t RingBuffer_GetLen(const RingBuffer *ringBuffer)
 {
 	size_t len = 0;
-	char* pLen = ringBuffer->pHead;
+	uint8_t* pLen = ringBuffer->pHead;
 
 	if (ringBuffer) {
 		
@@ -88,7 +88,7 @@ size_t RingBuffer_GetCapacity(const RingBuffer *ringBuffer)
 
 	if (ringBuffer) {
 		
-		return ((ringBuffer->pEnd - ringBuffer->pStart) / sizeof(char));
+		return ((ringBuffer->pEnd - ringBuffer->pStart) / sizeof(uint8_t));
 			
 	}
 	return 0;	
@@ -96,7 +96,7 @@ size_t RingBuffer_GetCapacity(const RingBuffer *ringBuffer)
 
 //************************************************************************
 
-bool RingBuffer_PutChar(RingBuffer *ringBuffer, char c)
+bool RingBuffer_PutChar(RingBuffer *ringBuffer, uint8_t c)
 {
 
 	if (ringBuffer) {
@@ -125,7 +125,7 @@ bool RingBuffer_PutChar(RingBuffer *ringBuffer, char c)
 
 //************************************************************************
 
-bool RingBuffer_GetChar(RingBuffer *ringBuffer, char *c)
+bool RingBuffer_GetChar(RingBuffer *ringBuffer, uint8_t *c)
 {
 
 	   // When buffer is not empty:
