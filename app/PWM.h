@@ -7,9 +7,8 @@
  #ifndef _PWM_H_
  #define _PWM_H_
  
- #include "MKL46Z4.h"
- #include <stdbool.h>
- 
+
+ #include "Common.h" 
  
  // Macros:
  #define STEER_PIN 1  // PTC1

@@ -1,11 +1,10 @@
 #ifndef _RING_BUFFER_
 #define _RING_BUFFER_
 
-#include <stdbool.h>
 #include <stddef.h>
-#include "MKL46Z4.h"
+#include "Common.h"
 
-#define RB_SIZE 20
+#define RB_SIZE 32
 
 /** Structure describing the ring buffer. */
 typedef struct {

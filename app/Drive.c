@@ -6,20 +6,31 @@
  
  #include "Drive.h"
  
- // Steering:
- Steer_s Steer = {1,  2,  3, 4};
+ 
+  typedef struct {
+ 
+   uint16_t min_p;
+   uint16_t max_p;
+   uint16_t cnt_p;
+   uint16_t act_p;
+ 
+ }Steer_t; 
+ 
+ 
+ // Steering ( in 1/E5 ):
+ Steer_t Steer = {630, 800, 700, 0};
  
  
  // Min/max angle:
  //****************************************************************
  
- void Drive_steer_extreme ( bool rl ){
+ void Drive_steer_extreme ( uint8_t rl ){
 
    if ( rl ){   
-      PWM_set_pro ( STEER_CH, Steer.max_p );   
+      PWM_set_E5 ( STEER_CH, Steer.max_p );   
    }
    else{
-      PWM_set_pro ( STEER_CH, Steer.min_p );   
+      PWM_set_E5 ( STEER_CH, Steer.min_p );   
    } 
  }
 
@@ -27,7 +38,7 @@
  // Center angle:
  void Drive_steer_cnt ( void ){
  
-   PWM_set_pro ( STEER_CH, Steer.cnt_p ); 
+   PWM_set_E5( STEER_CH, Steer.cnt_p ); 
  }
  
  //****************************************************************
