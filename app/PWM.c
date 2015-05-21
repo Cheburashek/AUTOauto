@@ -26,7 +26,7 @@
    PORTC->PCR[ STEER_PIN ] |= PORT_PCR_MUX( 4u );
 	PORTC->PCR[ MOTOR_PIN ] |= PORT_PCR_MUX( 4u );
    
-    
+    // MACRO!!!
    // Center-aligned PWM, LOW-true, both channels:
    TPM0->CONTROLS[STEER_CH].CnSC |= TPM_CnSC_MSB_MASK
                                  |  TPM_CnSC_ELSA_MASK; 
@@ -57,7 +57,6 @@
     uint16_t temp = 0;
     
     if ( promile != 1000 ){
-       
        temp = ( PWM_MOD_50HZ * promile ) / 1000;      
     }
     else{          
@@ -65,7 +64,6 @@
     }
     
     TPM0->CONTROLS[ ch ].CnV = TPM_CnV_VAL( temp );  
-    
  }
 //***********************************************************************
 // Setting PWM duty in 1/10000
@@ -73,7 +71,7 @@
    
     uint16_t temp = 0;
     
-    if ( E5 != 10000 ){
+    if ( 10000!= E5 ){
        
        temp = ( PWM_MOD_50HZ * E5 ) / 10000;      
     }

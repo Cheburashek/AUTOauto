@@ -111,7 +111,7 @@ bool RingBuffer_PutChar(RingBuffer *ringBuffer, uint8_t c)
 		}
 		else{			
 			*ringBuffer->pTail = c;
-			ringBuffer->pTail ++;
+			 ringBuffer->pTail ++;
 		
 			// When Tail pointer exceed area of ring buffer:
 			if( ringBuffer->pTail > ringBuffer->pEnd ){				
@@ -143,4 +143,5 @@ bool RingBuffer_GetChar(RingBuffer *ringBuffer, uint8_t *c)
 		}	
       
 	return false;
+
 }
