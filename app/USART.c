@@ -28,10 +28,17 @@ void UART_parser ( void){
    bool is_data = true;
    uint8_t cnt = 0;
    uint8_t temp = 0;
+   uint8_t len = RingBuffer_GetLen ( &UART_RingBuffer_Rx );
    
+<<<<<<< HEAD
    while ( is_data ){
    
       is_data =  RingBuffer_GetChar( &UART_RingBuffer_Rx, &temp );
+=======
+   while ( len+1 ){
+   
+      (void)RingBuffer_GetChar ( &UART_RingBuffer_Rx, &temp ); 
+>>>>>>> master
    
       if ( cnt >= 3 ){ 
       
@@ -73,6 +80,8 @@ void UART_parser ( void){
                
          }
       }
+      
+      len--;
    }
 }
 
@@ -98,6 +107,7 @@ void UART_data_send ( const uint8_t* data, uint8_t len ){
    }
    
    // Enabling TIE:
+  
    UART2_TIE_ON();
 }
 
@@ -105,7 +115,7 @@ void UART_data_send ( const uint8_t* data, uint8_t len ){
 
 
 //************************************************************************
-// UART2 HANDLER:
+// UART2 HANDLER:    DMA!
 void UART2_IRQHandler(void){
 
    uint8_t temp = 0;
@@ -113,7 +123,7 @@ void UART2_IRQHandler(void){
    //Transmitting ( until Tx ring buffer is empty ):
    if ( UART2->S1 & UART_S1_TDRE_MASK ){
       
-      if ( RingBuffer_GetChar( &UART_RingBuffer_Tx, &temp ) ){
+      if ( true == RingBuffer_GetChar( &UART_RingBuffer_Tx, &temp ) ){
       
          UART2->D = temp;
       }
@@ -127,7 +137,12 @@ void UART2_IRQHandler(void){
    if ( UART2->S1 & UART_S1_RDRF_MASK ){
       
       RingBuffer_PutChar( &UART_RingBuffer_Rx, UART2->D );
+<<<<<<< HEAD
       TPM1_OneShot ( UART_parser, 2 );   
+=======
+      (void)UART2->D;
+      TPM1_OneShot ( UART_parser, 5 );   
+>>>>>>> master
       
    }  
 }
