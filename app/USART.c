@@ -25,10 +25,13 @@ static cmd_cb_t cb_pars;   //  For function called after succesfull parsing
 
 void UART_parser ( void){
 
+   bool is_data = true;
    uint8_t cnt = 0;
    uint8_t temp = 0;
    
-   while ( RingBuffer_GetChar( &UART_RingBuffer_Rx, &temp ) ){
+   while ( is_data ){
+   
+      is_data =  RingBuffer_GetChar( &UART_RingBuffer_Rx, &temp );
    
       if ( cnt >= 3 ){ 
       
@@ -43,9 +46,7 @@ void UART_parser ( void){
             cnt = 0;
             // Echo for testing:    
             cb_pars( &cmd_frame );            
-            UART_data_send ( (uint8_t*)&cmd_frame, cmd_frame.Len + 2 );
-            
-          
+            UART_data_send ( (uint8_t*)&cmd_frame, cmd_frame.Len + 2 );              
          }
       }   
       else{
@@ -126,7 +127,7 @@ void UART2_IRQHandler(void){
    if ( UART2->S1 & UART_S1_RDRF_MASK ){
       
       RingBuffer_PutChar( &UART_RingBuffer_Rx, UART2->D );
-      TPM1_OneShot ( UART_parser, 3 );   
+      TPM1_OneShot ( UART_parser, 2 );   
       
    }  
 }

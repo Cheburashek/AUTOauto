@@ -12,11 +12,25 @@
  
    switch( cmd->OpCode ){
    
-      case 0x10:
-         Drive_steer_extreme ( cmd->Param[0] );
-         //UART_data_send ( &resp, 1 );
+      case STEER_RL:      
+         Drive_steer_extreme ( cmd->Param[0] );         
          break;
-   
+         
+      case STEER_PER:
+         //TODO
+         break;
+      
+      case MOTOR_STOP:
+         Drive_motor_stop();
+         break;
+         
+      case MOTOR_SLOW:
+         Drive_motor_slow();
+         break;
+         
+      case MOTOR_PER:
+         Drive_motor_per ( cmd->Param[0] );
+         break;
    
    }
  
