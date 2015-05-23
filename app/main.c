@@ -5,8 +5,8 @@
  */
  
  
- /* Servo min promil: 15
-    Servo max promil: 117
+ /* Servo min E5: 250
+    Servo max E5: 1150
  */
  
  
@@ -25,8 +25,17 @@
    UART_init();  
    UART_parser_cb ( Select_main ); // Needed for parsing
       
+<<<<<<< HEAD
    
    UART_data_send( dupa, 4 );   
+=======
+<<<<<<< HEAD
+       //PWM_set_E5 ( MOTOR_CH, 1150 );
+=======
+   
+   UART_data_send( dupa, 4 );   
+>>>>>>> master
+>>>>>>> temp
       
    //TPM1_OneShot ( test_f, 500 );
    
