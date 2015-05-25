@@ -30,21 +30,10 @@ void UART_parser ( void){
    uint8_t temp = 0;
    uint8_t len = RingBuffer_GetLen ( &UART_RingBuffer_Rx );
    
-<<<<<<< HEAD
-   while ( len+1 ){
-   
-      (void)RingBuffer_GetChar ( &UART_RingBuffer_Rx, &temp ); 
-=======
-<<<<<<< HEAD
+
    while ( is_data ){
    
       is_data =  RingBuffer_GetChar( &UART_RingBuffer_Rx, &temp );
-=======
-   while ( len+1 ){
-   
-      (void)RingBuffer_GetChar ( &UART_RingBuffer_Rx, &temp ); 
->>>>>>> master
->>>>>>> temp
    
       if ( cnt >= 3 ){ 
       
@@ -143,17 +132,9 @@ void UART2_IRQHandler(void){
    if ( UART2->S1 & UART_S1_RDRF_MASK ){
       
       RingBuffer_PutChar( &UART_RingBuffer_Rx, UART2->D );
-<<<<<<< HEAD
       (void)UART2->D;
-      TPM1_OneShot ( UART_parser, 5 );   
-=======
-<<<<<<< HEAD
-      TPM1_OneShot ( UART_parser, 2 );   
-=======
-      (void)UART2->D;
-      TPM1_OneShot ( UART_parser, 5 );   
->>>>>>> master
->>>>>>> temp
+      TPM1_OneShot ( UART_parser, 3 );   
+
       
    }  
 }

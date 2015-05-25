@@ -26,20 +26,31 @@
  
  // Steering and motor structures ( in 1/E5 ):
  
- static Steer_t Steer = { 500, 800, 650, 0 };
+ static Steer_t Steer = { STEER_MIN_E5, STEER_MAX_E5, STEER_CNT_E5, 0 };
  static Motor_t Motor = { MOTOR_MIN_E5, MOTOR_MAX_E5, 0 };
  
  // Min/max angle:
  //****************************************************************
  
- void Drive_steer_extreme ( uint8_t rl ){
+ void Drive_steer_LCR ( uint8_t lcr ){
 
-   if ( rl ){   
-      PWM_set_E5 ( STEER_CH, Steer.max );   
+   switch ( lcr ){   
+   
+      case 0x00:   
+         PWM_set_E5 ( STEER_CH, Steer.max );   
+         break;
+      case 0x01:
+         PWM_set_E5 ( STEER_CH, Steer.cnt );   
+         break;
+      case 0x02:
+         PWM_set_E5 ( STEER_CH, Steer.min );   
+         break;
+         
+         
+         
+         
+         
    }
-   else{
-      PWM_set_E5 ( STEER_CH, Steer.min );   
-   } 
  }
 
  //****************************************************************
@@ -51,26 +62,26 @@
  
  //****************************************************************
  // Percent of max angle scope ( 50% -> center):
- void Drive_angle_per ( uint8_t per ){
+ void Drive_steer_per ( uint8_t per ){
  
-   uint8_t temp = 0;
+   uint16_t temp = 0;
     
    if ( per < 50 ){      
-      temp = (( Steer.cnt - Steer.min )*per ) / 100; 
+      temp = ((( Steer.cnt - Steer.min )*per ) / 50) + Steer.min; 
    }
    else{
-      temp = (( Steer.max - Steer.cnt )*per ) / 100;
+      temp = ((( Steer.max - Steer.cnt )*(per-50) ) / 50) + Steer.cnt;
    }
  
-   PWM_set_pro ( STEER_CH, temp ); 
+   PWM_set_E5 ( STEER_CH, temp ); 
  }
  
  
  //****************************************************************
  // Stops motor (or initialization): 
- void Drive_motor_stop ( void ){
+ void Drive_motor_init ( void ){
  
-   PWM_set_pro ( MOTOR_CH, Motor.min ); 
+   PWM_set_E5 ( MOTOR_CH, MOTOR_INIT_E5 ); 
  }
  
  
@@ -80,10 +91,7 @@
 
    uint16_t E5 = 0;
    
-   if ( per > 100 ){
-      per = 100;
-   }
-   else if ( per > MOTOR_SPEED_MAX ){
+   if ( per > MOTOR_SPEED_MAX ){
       per = MOTOR_SPEED_MAX; 
    }      
    
@@ -97,7 +105,7 @@
  // Sets motor speed - maximum speed in % defined in Drive.h: 
  void Drive_motor_slow ( void ){
  
-   Drive_motor_per ( MOTOR_SPEED_MIN );
+   Drive_motor_per ( MOTOR_SPEED_SLOW );
  }
  
  
