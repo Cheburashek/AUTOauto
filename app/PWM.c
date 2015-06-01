@@ -17,6 +17,8 @@
    
    SIM->SCGC6 |= SIM_SCGC6_TPM0_MASK;
    SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK;
+   SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
+   
    SIM->SOPT2 |= SIM_SOPT2_TPMSRC( 3u ); // MCGIRCLK clock as a source 
     
    MCG->C1 |= MCG_C1_IRCLKEN_MASK;  // MCGIRCLK enabled
@@ -25,21 +27,27 @@
    // Alernatives:	
    PORTC->PCR[ STEER_PIN ] |= PORT_PCR_MUX( 4u );
 	PORTC->PCR[ MOTOR_PIN ] |= PORT_PCR_MUX( 4u );
+   PORTE->PCR[ DIRECT_PIN ] |= PORT_PCR_MUX( 3u );
    
-    // MACRO!!!
    // Center-aligned PWM, LOW-true, both channels:
-   TPM0->CONTROLS[STEER_CH].CnSC |= TPM_CnSC_MSB_MASK
+   TPM0->CONTROLS[ STEER_CH ].CnSC |= TPM_CnSC_MSB_MASK
                                  |  TPM_CnSC_ELSA_MASK; 
    
-   TPM0->CONTROLS[STEER_CH].CnSC &= ~(TPM_CnSC_MSA_MASK
+   TPM0->CONTROLS[ STEER_CH ].CnSC &= ~(TPM_CnSC_MSA_MASK
                                     | TPM_CnSC_ELSB_MASK);
    
-   TPM0->CONTROLS[MOTOR_CH].CnSC |= TPM_CnSC_MSB_MASK
-                                 |  TPM_CnSC_ELSA_MASK; 
+   TPM0->CONTROLS[ MOTOR_CH ].CnSC |= TPM_CnSC_MSB_MASK
+                                   |  TPM_CnSC_ELSA_MASK; 
    
-   TPM0->CONTROLS[MOTOR_CH].CnSC &= ~(TPM_CnSC_MSA_MASK
+   TPM0->CONTROLS[ MOTOR_CH ].CnSC &= ~(TPM_CnSC_MSA_MASK
                                     | TPM_CnSC_ELSB_MASK); 
-                       
+     
+   TPM0->CONTROLS[ DIRECT_CH ].CnSC |= TPM_CnSC_MSB_MASK
+                                    |  TPM_CnSC_ELSA_MASK; 
+   
+   TPM0->CONTROLS[ DIRECT_CH ].CnSC &= ~(TPM_CnSC_MSA_MASK
+                                    | TPM_CnSC_ELSB_MASK);   
+                                    
    // PWM frequency:                                                                              
    
    

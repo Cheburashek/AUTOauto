@@ -22,16 +22,35 @@
  #define MOTOR_INIT_E5 560  // For initialization
  #define MOTOR_MIN_E5 600   
  #define MOTOR_MAX_E5 800
- 
+  
  #define MOTOR_SPEED_MAX 50   // Absolutely maximum speed %
  #define MOTOR_SPEED_SLOW 3    // For SLOW function
  
+ #define DIRECT_FOR_E5 750
+ #define DIRECT_REV_E5 650
+ 
+ #define HORN_PIN 0    // PTB0
+ #define HORN_MASK ( 1UL<<HORN_PIN )
+ #define HORN_PIT_CH 0
+ 
+ #define HORN_PIT_ON()    PIT->CHANNEL[ HORN_PIT_CH ].TCTRL |= PIT_TCTRL_TEN_MASK  // Enabling timer channel
+ #define HORN_PIT_OFF()   PIT->CHANNEL[ HORN_PIT_CH ].TCTRL &= ~PIT_TCTRL_TEN_MASK   // Disabling timer channel
+ #define HORN_PIN_HI()    PTB-> PTOR |= GPIO_PSOR_PTSO( HORN_MASK )
+ #define HORN_PIN_LO()    PTB-> PTOR |= GPIO_PCOR_PTCO( HORN_MASK )
+ #define HORN_PIN_TOGGLE()    PTB-> PTOR |= GPIO_PTOR_PTTO( HORN_MASK )
+
+
+
+
  void Drive_steer_LCR ( uint8_t lcr );
  void Drive_steer_cnt ( void );
  void Drive_steer_per ( uint8_t per );
  void Drive_motor_init ( void );
  void Drive_motor_per ( uint8_t per );
  void Drive_motor_slow ( void );
+ void Drive_dir_set ( uint8_t dir );
+ void Drive_horn_beep ( uint8_t stat );
+ void Drive_horn_init ( void );
  
  
  

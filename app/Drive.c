@@ -109,5 +109,64 @@
  }
  
  
+ //****************************************************************
+ // Sets direction:
+ void Drive_dir_set ( uint8_t dir ){
+ 
+   if ( 0 == dir ) {
+      PWM_set_E5 ( DIRECT_CH, DIRECT_FOR_E5 );
+   }
+   else if ( 1 == dir ){
+      PWM_set_E5 ( DIRECT_CH, DIRECT_REV_E5 );
+   } 
+ }
+ 
+ 
+ //****************************************************************
+ // Horn beep:
+ void Drive_horn_beep ( uint8_t stat ){
+ 
+   if ( 0 == stat ){
+      HORN_PIT_OFF();
+      HORN_PIN_LO();
+   }
+   else if (1 == stat ){
+      HORN_PIT_ON();      
+   }
+ }
+ 
+ //****************************************************************
+ // Horn init ( PIT ):
+ 
+ void Drive_horn_init ( void ){
+ 
+   SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;
+   SIM->SCGC6 |= SIM_SCGC6_PIT_MASK;
+   
+   
+   PORTB->PCR[ HORN_PIN ] |= PORT_PCR_MUX ( 1u );
+   
+   PTB-> PDDR |= GPIO_PDDR_PDD( HORN_MASK ); // Output
+   
+   NVIC_ClearPendingIRQ(PIT_IRQn);
+	NVIC_EnableIRQ(PIT_IRQn);
+	NVIC_SetPriority(PIT_IRQn, 1);  // Lower priority
+   
+   PIT->MCR &= ~PIT_MCR_MDIS_MASK;     // Enabling PIT 
+   PIT->CHANNEL[ HORN_PIT_CH ].TCTRL |= PIT_TCTRL_TIE_MASK;   // Enabling ints
+   
+   // 48000 -> 1ms, 1kHz
+   PIT->CHANNEL[ HORN_PIT_CH ].LDVAL = 48000;
+ }
+ 
+ 
+ //****************************************************************
+ // PIT handler:
+ 
+ void PIT_IRQHandler ( void ){
+
+      HORN_PIN_TOGGLE(); 
+      PIT->CHANNEL[ HORN_PIT_CH ].TFLG |= PIT_TFLG_TIF_MASK;   // Clearing TIF
+ }
  
  

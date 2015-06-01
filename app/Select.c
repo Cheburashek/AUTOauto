@@ -31,6 +31,14 @@
       case MOTOR_PER:
          Drive_motor_per ( cmd->Param[0] );
          break;
+      
+      case MOTOR_DIR:
+         Drive_dir_set ( cmd->Param[0] );
+         break;
+         
+      case HORN_BEEP:
+         Drive_horn_beep ( cmd->Param[0] );
+         break;
    
    }
  

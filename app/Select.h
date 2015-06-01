@@ -18,7 +18,9 @@
    STEER_PER,
    MOTOR_STOP,
    MOTOR_SLOW,
-   MOTOR_PER
+   MOTOR_PER,
+   MOTOR_DIR,
+   HORN_BEEP
  
  }eOpCode_t;
  

@@ -21,15 +21,16 @@
    sLCD_init();
    PWM_init();
    TPM1_init();
+   Drive_horn_init();
    UART_init();  
    UART_parser_cb ( Select_main ); // Needed for parsing
       
    Drive_steer_LCR ( 0x01 );  // Center
-      
+   Drive_dir_set ( 0x00 );    // Forward   
     //PWM_set_E5 ( MOTOR_CH, 560 );  
    //TPM1_OneShot ( test_f, 500 );
    
-  while(1){}
+  while(1){} 
     
     
  }

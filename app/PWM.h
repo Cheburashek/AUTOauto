@@ -13,13 +13,17 @@
  // Macros:
  #define STEER_PIN 1  // PTC1
  #define MOTOR_PIN 2  // PTC2
+ #define DIRECT_PIN 30 // PTE30
  
  #define STEER_CH 0   // Channel 0, TPM0
  #define MOTOR_CH 1   // Channel 1, TPM0
+ #define DIRECT_CH 3  // Channel 3, TPM0 
  
  #define STEER_MASK  ( 1UL<<STEER_PIN )
  #define MOTOR_MASK  ( 1UL<<MOTOR_PIN )
- 
+ #define DIRECT_MASK ( 1UL<<DIRECT_PIN )
+  
+  
  #define PWM_MOD_50HZ   0x99C0   // for 50Hz PWM
  
  // Typedefs: 
