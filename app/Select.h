@@ -20,7 +20,8 @@
    MOTOR_SLOW,
    MOTOR_PER,
    MOTOR_DIR,
-   HORN_BEEP
+   HORN_BEEP,
+   PING = 0xF0
  
  }eOpCode_t;
  

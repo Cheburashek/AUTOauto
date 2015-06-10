@@ -33,7 +33,8 @@
 //************************************************************************
 // Functions defs:
 
-void UART_parser_cb ( cmd_cb_t );
+void UART_parser_cb ( cmd_cb_t cb );
+void UART_SATimeout_cb ( void (*cb) (void) );
 void UART_parser ( void );
 void UART_init( void );
 void UART_data_send ( const uint8_t* data, uint8_t len );

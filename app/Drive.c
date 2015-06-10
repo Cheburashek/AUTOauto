@@ -29,6 +29,17 @@
  static Steer_t Steer = { STEER_MIN_E5, STEER_MAX_E5, STEER_CNT_E5, 0 };
  static Motor_t Motor = { MOTOR_MIN_E5, MOTOR_MAX_E5, 0 };
  
+ //****************************************************************
+ // Still Alive timeout routine:
+ 
+ void Drive_SATimeout ( void ){
+ 
+   Drive_steer_cnt();
+   Drive_motor_init();
+   
+ }
+ 
+ 
  // Min/max angle:
  //****************************************************************
  
@@ -44,12 +55,7 @@
          break;
       case 0x02:
          PWM_set_E5 ( STEER_CH, Steer.min );   
-         break;
-         
-         
-         
-         
-         
+         break;                  
    }
  }
 

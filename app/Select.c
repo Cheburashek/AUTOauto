@@ -40,6 +40,13 @@
          Drive_horn_beep ( cmd->Param[0] );
          break;
    
+      case PING:
+         ;// TODO: special ping response
+         break;
+         
+      default:
+         ;
+         break;
    }
  
  
