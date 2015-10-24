@@ -27,7 +27,7 @@
    // Alernatives:	
    PORTC->PCR[ STEER_PIN ] |= PORT_PCR_MUX( 4u );
 	 PORTC->PCR[ MOTOR_PIN ] |= PORT_PCR_MUX( 4u );
-   PORTE->PCR[ DIRECT_PIN ] |= PORT_PCR_MUX( 3u );
+   PORTC->PCR[ DIRECT_PIN ] |= PORT_PCR_MUX( 4u );
 	 PORTD->PCR[ HEAD_PIN ] |= PORT_PCR_MUX( 4u );
 
    
@@ -118,6 +118,7 @@
 	NVIC_SetPriority(TPM2_IRQn, 1);  // Lower priority
    
  }
+ 
  
  
  //************************************************************************

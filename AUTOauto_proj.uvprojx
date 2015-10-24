@@ -504,7 +504,27 @@
             <File>
               <FileName>Head.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Head.c</FilePath>
+              <FilePath>.\app\Head.c</FilePath>
+            </File>
+            <File>
+              <FileName>Head.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\app\Head.h</FilePath>
+            </File>
+            <File>
+              <FileName>Select.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\app\Select.h</FilePath>
+            </File>
+            <File>
+              <FileName>IO.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\app\IO.c</FilePath>
+            </File>
+            <File>
+              <FileName>IO.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\app\IO.h</FilePath>
             </File>
           </Files>
         </Group>

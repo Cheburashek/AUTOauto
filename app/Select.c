@@ -46,7 +46,9 @@
          break;
          
       case HORN_BEEP:
-         Drive_horn_beep ( cmd->Param[0] );
+       Drive_horn_beep ( cmd->Param[0] );
+			 //Drive_horn_signal ( );
+
          break;
    
       case PING:

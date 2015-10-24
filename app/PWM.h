@@ -13,7 +13,7 @@
  // Macros:
  #define STEER_PIN 1  // PTC1
  #define MOTOR_PIN 2  // PTC2
- #define DIRECT_PIN 3 // PTE30
+ #define DIRECT_PIN 4 // PTC4
  #define HEAD_PIN 4	  // PTD4
  
  #define STEER_CH 0   // Channel 0, TPM0

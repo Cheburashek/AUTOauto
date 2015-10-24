@@ -132,9 +132,10 @@ void UART2_IRQHandler(void){
    
    // Receiving:   
    if ( UART2->S1 & UART_S1_RDRF_MASK ){
-      
+		 
       RingBuffer_PutChar( &UART_RingBuffer_Rx, UART2->D );
       (void)UART2->D;
+		 
       TPM2_OneShot ( UART_parser, 3 );   // End of frame timer      
    }  
 }

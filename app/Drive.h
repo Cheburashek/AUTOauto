@@ -24,7 +24,7 @@
  #define MOTOR_MAX_E5 800
   
  #define MOTOR_SPEED_MAX 50   // Absolutely maximum speed %
- #define MOTOR_SPEED_SLOW 5   // For SLOW function
+ #define MOTOR_SPEED_SLOW 10   // For SLOW function
  
  #define DIRECT_FOR_E5 750
  #define DIRECT_REV_E5 650
@@ -56,6 +56,9 @@
  void Drive_dir_set ( uint8_t dir );
  void Drive_horn_beep ( uint8_t stat );
  void Drive_horn_init ( void );
+ void Drive_horn_signal ( void );
+
+ 
  void Drive_head_per ( uint8_t per );
 
  
