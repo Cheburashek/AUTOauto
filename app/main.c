@@ -36,7 +36,7 @@
 	 //Drive_head_per ( 50 );
 
 	 Drive_motor_init();	
-	 Drive_motor_per ( 50) ;
+	 //Drive_motor_per ( 50) ;
    // Infinity loop
 	 LED_green_on();
    while(1){;}    
