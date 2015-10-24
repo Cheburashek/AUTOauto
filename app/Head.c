@@ -3,23 +3,26 @@
 #include "Drive.h"
 
 
-#define MEAS_AVE_NUM 2 		//(* 60ms)
-
-#define DIST_STOP_NEAR	 (DIST_TARGET-DIST_SENS_TRESH)  // mm
+#define DIST_STOP_NEAR	 (DIST_TARGET + 700)  // mm
 #define DIST_STOP_FAR		 3800	// mm
 
-#define DIST_SLOW_ROT		 150		// mm
+#define DIST_SLOW_ROT		 (DIST_TARGET-DIST_SENS_TRESH)		// mm
 #define DIST_FAST_ROT 	 2000		// mm
 
-#define DIST_SENS_TRESH  30			// mm
-#define DIST_TARGET			 100
+#define DIST_SENS_TRESH  100			// mm
+#define DIST_TARGET			 1000
 
 #define ROT_RANGE_LOW		 10			// %
 #define ROT_RANGE_MID		 25			// %
 #define ROT_RANGE_HI		 60			// %
 #define ROT_RANGE_FULL 	 100		// %
 
+#define INERTION  			 70
+#define INER_NUM				 6
 
+
+#define CLOCKWISE 0x10
+#define CNTCLOCKWISE 0x11
 
 
 
@@ -33,21 +36,27 @@ static void Head_search_min ( uint8_t range );
 void Head_measure_end ( uint16_t dist )
 {
 
-	static uint32_t distSum;
-	static uint8_t cnt;
+	static uint32_t distPrev;
+	static uint8_t inerCnt;
 	
-	if ( cnt < MEAS_AVE_NUM )
+	if ( ((distPrev+INERTION) < dist) || ((distPrev-INERTION) > dist) )
 	{
-		distSum += dist;
-		cnt++;
-  }
+		inerCnt++;
+	}
 	else
 	{
-		cnt = 0;
-		distSum /= MEAS_AVE_NUM;
-		Head_decision_block ( distSum );
-		
+		inerCnt = 0;
+		distPrev = dist;
+		Head_decision_block ( distPrev );
 	}
+  
+	if ( INER_NUM == inerCnt )
+	{
+		inerCnt = 0;
+		distPrev = dist;
+		Head_decision_block ( distPrev );
+	}
+	
 }
 
 
@@ -57,12 +66,13 @@ static void Head_search_min ( uint8_t range )
 	static uint8_t prevPer = 50;
 	//static uint8_t minPer;
   static uint8_t actPer = 50;
-
+	//static uint8_t direction = CLOCKWISE;
+	
 	static uint8_t actRange = 0xFF;
 	
 	if ( range != actRange )
 	{
-		actPer = prevPer-(range/2);
+		actPer = prevPer-range;
 		prevPer = actPer;
 	}
 
@@ -74,23 +84,20 @@ static void Head_search_min ( uint8_t range )
 		}
 		if ( ROT_RANGE_MID == actRange )
 		{
-			actPer += 3;
+			actPer += 2;
 		}
 		if ( ROT_RANGE_HI == actRange )
 		{
-			actPer += 5;
+			actPer += 3;
 		}
 		if ( ROT_RANGE_FULL == actRange )
 		{
-			actPer += 7;
+			actPer += 4;
 		}
 		
 		Drive_head_per ( actPer );
 	}
-	else
-	{
-		actPer = prevPer-(range/2);	// Search again
-	}		
+
 	
 	
 
@@ -110,7 +117,8 @@ static void Head_decision_block ( uint16_t dist )
 	// Target:
 	else if ( ((DIST_TARGET+DIST_SENS_TRESH) >= dist) && ((DIST_TARGET-DIST_SENS_TRESH) <= dist) )
 	{
-	// ? steering
+	uint8_t a = 1;
+		a = 2;
 	
 	}
 	
@@ -132,6 +140,11 @@ static void Head_decision_block ( uint16_t dist )
 		Head_search_min ( ROT_RANGE_HI );				// Scan for minimal distance
 
 	}	
+	else
+	{
+			Head_search_min ( ROT_RANGE_MID );				// Scan for minimal distance
+
+	}
 	
 	
 	

@@ -29,9 +29,9 @@
  #define DIRECT_FOR_E5 750
  #define DIRECT_REV_E5 650
  
- #define HEAD_MIN_E5 270   
- #define HEAD_CNT_E5 1130
- #define HEAD_MAX_E5 700
+ #define HEAD_MIN_E5 260   
+ #define HEAD_CNT_E5 ((HEAD_MIN_E5+HEAD_MAX_E5)/2)
+ #define HEAD_MAX_E5 1300
  
  
  #define HORN_PIN 0    // PTB0
