@@ -24,12 +24,12 @@
  #define MOTOR_MAX_E5 800
   
  #define MOTOR_SPEED_MAX 50   // Absolutely maximum speed %
- #define MOTOR_SPEED_SLOW 3    // For SLOW function
+ #define MOTOR_SPEED_SLOW 5   // For SLOW function
  
  #define DIRECT_FOR_E5 750
  #define DIRECT_REV_E5 650
  
- #define HEAD_MIN_E5 260   
+ #define HEAD_MIN_E5 280   
  #define HEAD_CNT_E5 ((HEAD_MIN_E5+HEAD_MAX_E5)/2)
  #define HEAD_MAX_E5 1300
  

@@ -32,7 +32,7 @@ void UART_parser ( void){
       is_data =  RingBuffer_GetChar( &UART_RingBuffer_Rx, &temp );
    
       if ( cnt >= 3 ){ 
-      
+       
          if ( cnt != (cmd_frame.Len + 3) ){
       
             cmd_frame.Param[cnt - 3] = temp;

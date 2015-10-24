@@ -1,7 +1,7 @@
 
 #include "Head.h"
 #include "Drive.h"
-
+#include "USART.h"
 
 #define DIST_STOP_NEAR	 (DIST_TARGET + 700)  // mm
 #define DIST_STOP_FAR		 3800	// mm
@@ -20,44 +20,117 @@
 #define INERTION  			 70
 #define INER_NUM				 6
 
-
 #define CLOCKWISE 0x10
 #define CNTCLOCKWISE 0x11
 
 
+// New implem
+#define RANGE 20
+#define STOP_DIST 500
 
 
 static void Head_decision_block ( uint16_t dist );
 static void Head_search_min ( uint8_t range );
+static void Head_goto_min ( uint8_t minPer, uint16_t minDist );
 
 
+bool motorPermFlag = true;
 
 //************************************************************************
 void Head_measure_end ( uint16_t dist )
 {
 
-	static uint32_t distPrev;
-	static uint8_t inerCnt;
+//	static uint32_t distPrev;
+//	static uint8_t inerCnt;
+//	
+//	if ( ((distPrev+INERTION) < dist) || ((distPrev-INERTION) > dist) )
+//	{
+//		inerCnt++;
+//	}
+//	else
+//	{
+//		inerCnt = 0;
+//		distPrev = dist;
+//		Head_decision_block ( distPrev );
+//	}
+//  
+//	if ( INER_NUM == inerCnt )
+//	{
+//		inerCnt = 0;
+//		distPrev = dist;
+//		Head_decision_block ( distPrev );
+//	}
+
+	static uint8_t actPer = 50;
+	static bool dir = false;
+	static uint16_t minDist = 0xFFFF;
+	static uint8_t minPer = 0xFF;
 	
-	if ( ((distPrev+INERTION) < dist) || ((distPrev-INERTION) > dist) )
+	if ( minDist > dist )
 	{
-		inerCnt++;
+		minDist = dist;
+	}
+	
+	if ( minPer > actPer )
+	{
+		minPer = actPer;
+	}
+	
+  if ( dir )
+	{
+		actPer += 5;
 	}
 	else
 	{
-		inerCnt = 0;
-		distPrev = dist;
-		Head_decision_block ( distPrev );
+		actPer -= 5;
 	}
-  
-	if ( INER_NUM == inerCnt )
+	
+	if ( ((0+RANGE) >= actPer) || ((100-RANGE) <= actPer) )
 	{
-		inerCnt = 0;
-		distPrev = dist;
-		Head_decision_block ( distPrev );
+		//Head_goto_min ( minPer, minDist );
+		
+		uint8_t data[] = { CMD_PREFIX, 0x10, 0x03, minPer, (uint8_t)(minDist>>8), (uint8_t)minDist };
+		UART_data_send ( data, sizeof ( data ) );
+		
+		dir ^= 1;
+		minDist = 0xFFFF;
+		minPer = 0xFF;
+		
+	}		
+		//Head_goto_min ( minPer, minDist );
+
+	Drive_head_per ( actPer );
+		
+	if ( minDist < STOP_DIST )		// STOP
+	{
+		Drive_motor_init ( );	
+		motorPermFlag = false;
+	}
+	else
+	{
+		motorPermFlag = true;
+	}
+
+}
+
+
+static void Head_goto_min ( uint8_t minPer, uint16_t minDist )
+{
+	Drive_steer_per ( (minPer*100)/(100-2*RANGE) );
+	//Drive_steer_per ( minPer );
+	
+	if ( minDist > STOP_DIST )
+	{
+		Drive_motor_slow();
 	}
 	
 }
+
+
+
+
+
+
 
 
 //************************************************************************

@@ -34,8 +34,8 @@
    Drive_dir_set ( 0x00 );    // Forward 
 	 Drive_head_per ( 50 );
 
-	
-	 
+	 Drive_motor_init();	
+	 Drive_motor_per ( 50) ;
    // Infinity loop
    while(1){;}    
     

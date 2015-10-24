@@ -3,8 +3,11 @@
  *
  *
  */
- 
+
  #include "Select.h"
+ #include "Head.h"
+ 
+ extern bool  motorPermFlag;
  
  uint8_t resp = 0xF0;
  
@@ -25,11 +28,17 @@
          break;
          
       case MOTOR_SLOW:
+				if ( motorPermFlag )
+				{
          Drive_motor_slow();
+				}
          break;
          
       case MOTOR_PER:
+				if (  motorPermFlag )
+				{
          Drive_motor_per ( cmd->Param[0] );
+				}
          break;
       
       case MOTOR_DIR:
