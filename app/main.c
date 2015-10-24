@@ -15,14 +15,18 @@
  
  int main ( void ){
    
-	 uint32_t i = 0;
 	 
    // Initialization:
    sLCD_init();
    PWM_init();
-   TPM1_init();
-   Drive_horn_init();
+   TPM2_init();
+   //Drive_horn_init();
    UART_init();  
+	 
+	 sLCD_init();
+	Trig_init();
+	Echo_init();
+	 
    UART_parser_cb ( Select_main );        // CBfor parsing
    UART_SATimeout_cb ( Drive_SATimeout ); // CB for Still Alive timeout
       

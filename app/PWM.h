@@ -13,7 +13,7 @@
  // Macros:
  #define STEER_PIN 1  // PTC1
  #define MOTOR_PIN 2  // PTC2
- #define DIRECT_PIN 30 // PTE30
+ #define DIRECT_PIN 3 // PTE30
  
  #define STEER_CH 0   // Channel 0, TPM0
  #define MOTOR_CH 1   // Channel 1, TPM0
@@ -34,8 +34,8 @@
  void PWM_set_pro ( uint8_t ch, uint16_t promile );
  void PWM_set_E5 ( uint8_t ch, uint16_t E5 );
  
- void TPM1_OneShot ( cb_t cb, uint16_t ms );
- void TPM1_init ( void );
+ void TPM2_OneShot ( cb_t cb, uint16_t ms );
+ void TPM2_init ( void );
  
  #endif
  

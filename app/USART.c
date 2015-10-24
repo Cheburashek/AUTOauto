@@ -47,7 +47,7 @@ void UART_parser ( void){
             UART_data_send ( (uint8_t*)&cmd_frame, cmd_frame.Len + 2 );
 					  if ( true == satPermFlag )
 						{
-							TPM1_OneShot ( cb_SATimeout, 350 );
+							TPM2_OneShot ( cb_SATimeout, 350 );
 						}
 					}
       }   
@@ -135,7 +135,7 @@ void UART2_IRQHandler(void){
       
       RingBuffer_PutChar( &UART_RingBuffer_Rx, UART2->D );
       (void)UART2->D;
-      TPM1_OneShot ( UART_parser, 3 );   // End of frame timer      
+      TPM2_OneShot ( UART_parser, 3 );   // End of frame timer      
    }  
 }
 

@@ -7,7 +7,7 @@
  #include "PWM.h"
  
  
- static cb_t cb_TPM1;
+ static cb_t cb_TPM2;
  
  
  //***********************************************************************
@@ -26,7 +26,7 @@
     
    // Alernatives:	
    PORTC->PCR[ STEER_PIN ] |= PORT_PCR_MUX( 4u );
-	PORTC->PCR[ MOTOR_PIN ] |= PORT_PCR_MUX( 4u );
+	 PORTC->PCR[ MOTOR_PIN ] |= PORT_PCR_MUX( 4u );
    PORTE->PCR[ DIRECT_PIN ] |= PORT_PCR_MUX( 3u );
    
    // Center-aligned PWM, LOW-true, both channels:
@@ -94,61 +94,61 @@
  
  
  //************************************************************************
- // TPM1 general purpose timer initialization
- void TPM1_init ( void ){ 
+ // TPM2 general purpose timer initialization
+ void TPM2_init ( void ){ 
  
-   SIM->SCGC6 |= SIM_SCGC6_TPM1_MASK;
+   SIM->SCGC6 |= SIM_SCGC6_TPM2_MASK;
    SIM->SOPT2 |= SIM_SOPT2_TPMSRC( 3u ); // MCGIRCLK clock as a source 
     
    MCG->C1 |= MCG_C1_IRCLKEN_MASK;  // MCGIRCLK enabled
    MCG->C2 |= MCG_C2_IRCS_MASK;     // Fast IRC 4MHz
      
-   TPM1->SC |= TPM_SC_PS( 7u );    // Divided by 128 -> ~16kHz 
+   TPM2->SC |= TPM_SC_PS( 7u );    // Divided by 128 -> ~16kHz 
  
- 	NVIC_ClearPendingIRQ(TPM1_IRQn);
-	NVIC_EnableIRQ(TPM1_IRQn);
-	NVIC_SetPriority(TPM1_IRQn, 1);  // Lower priority
+ 	NVIC_ClearPendingIRQ(TPM2_IRQn);
+	NVIC_EnableIRQ(TPM2_IRQn);
+	NVIC_SetPriority(TPM2_IRQn, 1);  // Lower priority
    
  }
  
  
  //************************************************************************
- // TPM1 general purpose timer for callbacks   
- void TPM1_OneShot ( cb_t cb, uint16_t ms ){
+ // TPM2 general purpose timer for callbacks   
+ void TPM2_OneShot ( cb_t cb, uint16_t ms ){
  
-   TPM1->CNT = TPM_CNT_COUNT( 0u );   // Clearing TPM
+   TPM2->CNT = TPM_CNT_COUNT( 0u );   // Clearing TPM
  
    // for ~16kHz ( max 4s ): 
    if ( ms <= 4000 ){
-      TPM1->MOD = TPM_MOD_MOD( (16*ms) ); 
+      TPM2->MOD = TPM_MOD_MOD( (16*ms) ); 
    }
    else{
-      TPM1->MOD = TPM_MOD_MOD( 64000 );
+      TPM2->MOD = TPM_MOD_MOD( 64000 );
    }
    
-   TPM1->SC |= TPM_SC_TOIE_MASK; // Interrupt enabled
+   TPM2->SC |= TPM_SC_TOIE_MASK; // Interrupt enabled
    
-   cb_TPM1 = cb;  // Callback set
+   cb_TPM2 = cb;  // Callback set
    
-   TPM1->SC |= TPM_SC_CMOD( 1u );    // TPM enabled   
+   TPM2->SC |= TPM_SC_CMOD( 1u );    // TPM enabled   
    
  }
  
   
  //************************************************************************
- // TPM1 IRC handler:
+ // TPM2 IRC handler:
  
- void TPM1_IRQHandler ( void ){
+ void TPM2_IRQHandler ( void ){
  
    // Timer overflow:
-   if ( TPM1->SC & TPM_SC_TOF_MASK ){  
+   if ( TPM2->SC & TPM_SC_TOF_MASK ){  
    
-      TPM1->SC |= TPM_SC_TOF_MASK;    // Clearing TOF
-      TPM1->SC &= ~TPM_SC_TOIE_MASK;  // Interrupt disabled
-      TPM1->SC &= ~TPM_SC_CMOD_MASK; // TPM disabled  -> Firstly disable interrupts!
-      TPM1->MOD = TPM_MOD_MOD( 0u );
+      TPM2->SC |= TPM_SC_TOF_MASK;    // Clearing TOF
+      TPM2->SC &= ~TPM_SC_TOIE_MASK;  // Interrupt disabled
+      TPM2->SC &= ~TPM_SC_CMOD_MASK; // TPM disabled  -> Firstly disable interrupts!
+      TPM2->MOD = TPM_MOD_MOD( 0u );
       
-      cb_TPM1();    // Callback invoke 
+      cb_TPM2();    // Callback invoke 
       
    }
    

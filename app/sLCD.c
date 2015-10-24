@@ -35,6 +35,7 @@ void sLCD_err(uint8_t err_num){
 			break;
 	}
 	
+	exit(); // Undefined function - hard break
 }
 	
 	
@@ -357,16 +358,16 @@ void sLCD_dec(uint16_t disp_value){
 	
 	temp_value = disp_value / 10;
 	disp_digit = temp_value % 10;
-	//if(disp_value < 10){disp_digit=0xFF;}
+	if(disp_value < 10){disp_digit=0xFF;}
 	sLCD_set(disp_digit, 3);
 	
 	temp_value = temp_value / 10;
 	disp_digit = temp_value % 10;
-	//if(disp_value < 100){disp_digit=0xFF;}
+	if(disp_value < 100){disp_digit=0xFF;}
 	sLCD_set(disp_digit, 2);
 	
 	disp_digit = temp_value / 10;
-	//if(disp_value < 1000){disp_digit=0xFF;}
+	if(disp_value < 1000){disp_digit=0xFF;}
 	sLCD_set(disp_digit, 1);
 	
 

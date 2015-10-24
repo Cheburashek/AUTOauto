@@ -167,12 +167,12 @@
  
  
  //****************************************************************
- // PIT handler:
- 
- void PIT_IRQHandler ( void ){
+// // PIT handler:
+// 
+// void PIT_IRQHandler ( void ){
 
-      HORN_PIN_TOGGLE(); 
-      PIT->CHANNEL[ HORN_PIT_CH ].TFLG |= PIT_TFLG_TIF_MASK;   // Clearing TIF
- }
+//      HORN_PIN_TOGGLE(); 
+//      PIT->CHANNEL[ HORN_PIT_CH ].TFLG |= PIT_TFLG_TIF_MASK;   // Clearing TIF
+// }
  
  

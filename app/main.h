@@ -15,7 +15,8 @@
 #include "sLCD.h"
 #include "Select.h"
 #include "Common.h"
- 
+#include "Echo.h"
+#include "Trig.h"
   
 
 
