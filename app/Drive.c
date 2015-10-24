@@ -28,6 +28,9 @@
  
  static Steer_t Steer = { STEER_MIN_E5, STEER_MAX_E5, STEER_CNT_E5, 0 };
  static Motor_t Motor = { MOTOR_MIN_E5, MOTOR_MAX_E5, 0 };
+ static Steer_t Head =  { HEAD_MIN_E5, HEAD_MAX_E5, HEAD_CNT_E5, 0 };
+
+ 
  
  //****************************************************************
  // Still Alive timeout routine:
@@ -127,42 +130,65 @@
    } 
  }
  
- 
  //****************************************************************
- // Horn beep:
- void Drive_horn_beep ( uint8_t stat ){
- 
-   if ( 0 == stat ){
-      HORN_PIT_OFF();
-      HORN_PIN_LO();
+ // Head:
+ void Drive_head_per ( uint8_t per )
+ {
+	 
+	 uint16_t temp = 0;
+
+   if ( per < 50 ){      
+      temp = ((( Head.cnt - Head.min )*per ) / 50) + Head.min; 
    }
-   else if (1 == stat ){
-      HORN_PIT_ON();      
+   else{
+      temp = ((( Head.max - Head.cnt )*(per-50) ) / 50) + Head.cnt;
    }
+   PWM_set_E5 ( HEAD_CH, temp );
+
  }
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ //****************************************************************
+// // Horn beep:
+ void Drive_horn_beep ( uint8_t stat ){
+// 
+//   if ( 0 == stat ){
+//      HORN_PIT_OFF();
+//      HORN_PIN_LO();
+//   }
+//   else if (1 == stat ){
+//      HORN_PIT_ON();      
+//  }
+ }
+// 
  //****************************************************************
  // Horn init ( PIT ):
  
  void Drive_horn_init ( void ){
- 
-   SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;
-   SIM->SCGC6 |= SIM_SCGC6_PIT_MASK;
-   
-   
-   PORTB->PCR[ HORN_PIN ] |= PORT_PCR_MUX ( 1u );
-   
-   PTB-> PDDR |= GPIO_PDDR_PDD( HORN_MASK ); // Output
-   
-   NVIC_ClearPendingIRQ(PIT_IRQn);
-	NVIC_EnableIRQ(PIT_IRQn);
-	NVIC_SetPriority(PIT_IRQn, 1);  // Lower priority
-   
-   PIT->MCR &= ~PIT_MCR_MDIS_MASK;     // Enabling PIT 
-   PIT->CHANNEL[ HORN_PIT_CH ].TCTRL |= PIT_TCTRL_TIE_MASK;   // Enabling ints
-   
-   // 48000 -> 1ms, 1kHz
-   PIT->CHANNEL[ HORN_PIT_CH ].LDVAL = 48000;
+// 
+//   SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;
+//   SIM->SCGC6 |= SIM_SCGC6_PIT_MASK;
+//   
+//   
+//   PORTB->PCR[ HORN_PIN ] |= PORT_PCR_MUX ( 1u );
+//   
+//   PTB-> PDDR |= GPIO_PDDR_PDD( HORN_MASK ); // Output
+//   
+//   NVIC_ClearPendingIRQ(PIT_IRQn);
+//	NVIC_EnableIRQ(PIT_IRQn);
+//	NVIC_SetPriority(PIT_IRQn, 1);  // Lower priority
+//   
+//   PIT->MCR &= ~PIT_MCR_MDIS_MASK;     // Enabling PIT 
+//   PIT->CHANNEL[ HORN_PIT_CH ].TCTRL |= PIT_TCTRL_TIE_MASK;   // Enabling ints
+//   
+//   // 48000 -> 1ms, 1kHz
+//   PIT->CHANNEL[ HORN_PIT_CH ].LDVAL = 48000;
  }
  
  

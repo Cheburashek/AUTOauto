@@ -28,6 +28,8 @@
    PORTC->PCR[ STEER_PIN ] |= PORT_PCR_MUX( 4u );
 	 PORTC->PCR[ MOTOR_PIN ] |= PORT_PCR_MUX( 4u );
    PORTE->PCR[ DIRECT_PIN ] |= PORT_PCR_MUX( 3u );
+	 PORTD->PCR[ HEAD_PIN ] |= PORT_PCR_MUX( 4u );
+
    
    // Center-aligned PWM, LOW-true, both channels:
    TPM0->CONTROLS[ STEER_CH ].CnSC |= TPM_CnSC_MSB_MASK
@@ -47,6 +49,12 @@
    
    TPM0->CONTROLS[ DIRECT_CH ].CnSC &= ~(TPM_CnSC_MSA_MASK
                                     | TPM_CnSC_ELSB_MASK);   
+																		  
+   TPM0->CONTROLS[ HEAD_CH ].CnSC |= TPM_CnSC_MSB_MASK
+                                    |  TPM_CnSC_ELSA_MASK; 
+   
+   TPM0->CONTROLS[ HEAD_CH ].CnSC &= ~(TPM_CnSC_MSA_MASK
+                                    | TPM_CnSC_ELSB_MASK);  
                                     
    // PWM frequency:                                                                              
    

@@ -29,6 +29,11 @@
  #define DIRECT_FOR_E5 750
  #define DIRECT_REV_E5 650
  
+ #define HEAD_MIN_E5 270   
+ #define HEAD_CNT_E5 1130
+ #define HEAD_MAX_E5 700
+ 
+ 
  #define HORN_PIN 0    // PTB0
  #define HORN_MASK ( 1UL<<HORN_PIN )
  #define HORN_PIT_CH 0
@@ -51,7 +56,8 @@
  void Drive_dir_set ( uint8_t dir );
  void Drive_horn_beep ( uint8_t stat );
  void Drive_horn_init ( void );
- 
+ void Drive_head_per ( uint8_t per );
+
  
  
  #endif
