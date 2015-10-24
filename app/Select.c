@@ -5,8 +5,10 @@
  */
 
  #include "Select.h"
- #include "Head.h"
+
  
+  
+ extern bool  motorRewFlag;
  extern bool  motorPermFlag;
  
  uint8_t resp = 0xF0;
@@ -25,17 +27,17 @@
       
       case MOTOR_STOP:
          Drive_motor_init();
-         break;
-         
+         break; 
+			         
       case MOTOR_SLOW:
-				if ( motorPermFlag )
+				if ( motorPermFlag && !motorRewFlag )
 				{
          Drive_motor_slow();
 				}
          break;
          
       case MOTOR_PER:
-				if (  motorPermFlag )
+				if (  motorPermFlag && !motorRewFlag )
 				{
          Drive_motor_per ( cmd->Param[0] );
 				}

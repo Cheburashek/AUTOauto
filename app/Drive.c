@@ -6,6 +6,11 @@
  
  #include "Drive.h"
  #include "IO.h"
+ #include "Echo.h"
+ #include "USART.h"
+ 
+ #define STOP_DIST  800
+ 
  
  typedef struct {
  
@@ -23,6 +28,11 @@
    uint16_t act;
  
  }Motor_t; 
+ 
+ 
+ // Externs:
+bool motorPermFlag = true;
+bool motorRewFlag = false;		// Rewerse
  
  // Steering and motor structures ( in 1/E5 ):
  
@@ -124,28 +134,15 @@
  
    if ( 0 == dir ) {
       PWM_set_E5 ( DIRECT_CH, DIRECT_FOR_E5 );
+		  motorRewFlag = false;
    }
    else if ( 1 == dir ){
       PWM_set_E5 ( DIRECT_CH, DIRECT_REV_E5 );
+		  motorRewFlag = true;
    } 
  }
  
- //****************************************************************
- // Head:
- void Drive_head_per ( uint8_t per )
- {
-	 
-	 uint16_t temp = 0;
 
-   if ( per < 50 ){      
-      temp = ((( Head.cnt - Head.min )*per ) / 50) + Head.min; 
-   }
-   else{
-      temp = ((( Head.max - Head.cnt )*(per-50) ) / 50) + Head.cnt;
-   }
-   PWM_set_E5 ( HEAD_CH, temp );
-
- }
  
  //****************************************************************
  void Drive_horn_beep ( uint8_t stat )
@@ -172,6 +169,34 @@ void Drive_pulse ( void )
 	
 } 
  
+
+//****************************************************************
+void Drive_measure_end ( uint16_t dist )
+{
+		static uint8_t cnt;
+		
+	if ( dist < STOP_DIST )		// STOP
+	{
+		Drive_motor_init ( );	
+		motorPermFlag = false;
+		Drive_horn_beep ( 0x01 );
+	}
+	else
+	{
+		motorPermFlag = true;
+		Drive_horn_beep ( 0x00 );
+	}
+	
+	cnt ++;	
+	
+	if ( cnt == 10 )
+	{
+		uint8_t data[] = { CMD_PREFIX, 0x10, 0x02, (uint8_t)(dist>>8), (uint8_t)dist };
+		
+		UART_data_send ( data, sizeof ( data ) );
+		cnt = 0;	
+	}
+}
  
  
  

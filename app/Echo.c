@@ -63,8 +63,7 @@ void TPM1_IRQHandler(void){
 		if(temp_cnv > 9999){temp_cnv = 9999;}
 		
 		sLCD_dec(temp_cnv);
-		Head_measure_end ( temp_cnv );
-		
+		Drive_measure_end ( temp_cnv );		
 		temp_cnv = 0;
 		TPM1->CNT = 0;
 		flag = 0;	

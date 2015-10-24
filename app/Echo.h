@@ -3,7 +3,6 @@
 
 #include "MKL46Z4.h"
 #include "sLCD.h"
-#include "Head.h"
 
 
 #define ECHO_PIN 20	// PE

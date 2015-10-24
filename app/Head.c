@@ -26,7 +26,7 @@
 
 // New implem
 #define RANGE 20
-#define STOP_DIST 1500
+#define STOP_DIST 700
 
 
 static void Head_decision_block ( uint16_t dist );
